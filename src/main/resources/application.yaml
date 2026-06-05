@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: LinkFlow
+  datasource:
+    url: jdbc:postgresql://localhost:5432/link_flow_db
+    username: postgres
+    password: 8941
+  jpa:
+    hibernate:
+      ddl-auto: update

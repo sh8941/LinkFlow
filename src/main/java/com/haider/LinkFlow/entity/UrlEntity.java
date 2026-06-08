@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 @Entity
 public class UrlEntity {
@@ -15,8 +17,8 @@ public class UrlEntity {
     private String originalUrl;
     private String shortCode;
     // createdby
-    // createdat
-    // expiresat
+    private Instant createdAt;
+    private Instant expiresAt;
     private boolean active;
     private Long clickCount;
 }

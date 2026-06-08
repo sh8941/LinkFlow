@@ -29,4 +29,14 @@ public class ShortCodeUtility {
 
         return code;
     }
+
+    public String normalize(String url) {
+        url = url.trim();
+
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+
+        return url.toLowerCase();
+    }
 }

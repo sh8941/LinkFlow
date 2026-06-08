@@ -3,6 +3,7 @@ package com.haider.LinkFlow.controller;
 import com.haider.LinkFlow.dtos.reponse.UrlResponse;
 import com.haider.LinkFlow.dtos.request.UrlRequest;
 import com.haider.LinkFlow.service.UrlService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping
-    public ResponseEntity<?> createUrl(@RequestBody UrlRequest urlRequest) {
+    public ResponseEntity<?> createUrl(@RequestBody @Valid UrlRequest urlRequest) {
         UrlResponse urlResponse = urlService.addUrl(urlRequest);
         return ResponseEntity.ok(urlResponse);
     }

@@ -27,4 +27,10 @@ public class UrlController {
         String longUrl = urlService.getByShortCode(url);
         return ResponseEntity.status(301).location(URI.create(longUrl)).build();
     }
+
+    @DeleteMapping("{url}")
+    public ResponseEntity<?> deleteUrl(@PathVariable String url) {
+        urlService.deactivateUrl(url);
+        return ResponseEntity.noContent().build();
+    }
 }

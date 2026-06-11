@@ -7,13 +7,11 @@ import com.haider.LinkFlow.exception.ResourceNotFound;
 import com.haider.LinkFlow.exception.UrlExpiredException;
 import com.haider.LinkFlow.repo.UrlRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DurationFormat;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 
 @Service
@@ -57,4 +55,9 @@ public class UrlService {
         return urlEntity.getOriginalUrl();
     }
 
+    public void deactivateUrl(String url) {
+        UrlEntity  urlEntity = getEntityByShortCode(url);
+        urlEntity.setActive(false);
+        urlRepo.save(urlEntity);
+    }
 }

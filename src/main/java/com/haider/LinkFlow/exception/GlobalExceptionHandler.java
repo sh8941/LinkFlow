@@ -2,6 +2,7 @@ package com.haider.LinkFlow.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +44,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UrlExpiredException.class)
     public ResponseEntity<?> handleUrlExpiredException(UrlExpiredException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
 }

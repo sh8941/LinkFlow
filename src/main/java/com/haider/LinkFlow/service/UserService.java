@@ -1,5 +1,6 @@
 package com.haider.LinkFlow.service;
 
+import com.haider.LinkFlow.config.SecurityUtils;
 import com.haider.LinkFlow.dtos.reponse.UserResponse;
 import com.haider.LinkFlow.dtos.request.UserRequest;
 import com.haider.LinkFlow.entity.UserEntity;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private SecurityUtils securityUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -29,6 +32,14 @@ public class UserService {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(saved.getId());
         userResponse.setUsername(saved.getUsername());
+        return userResponse;
+    }
+
+    public UserResponse getCurrentUserResponse() {
+        UserEntity currentUser = securityUtils.getCurrentUser();
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(currentUser.getId());
+        userResponse.setUsername(currentUser.getUsername());
         return userResponse;
     }
 }

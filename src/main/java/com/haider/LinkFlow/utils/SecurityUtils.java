@@ -1,4 +1,4 @@
-package com.haider.LinkFlow.config;
+package com.haider.LinkFlow.utils;
 
 import com.haider.LinkFlow.entity.UserEntity;
 import com.haider.LinkFlow.exception.ResourceNotFound;

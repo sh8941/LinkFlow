@@ -4,6 +4,7 @@ import com.haider.LinkFlow.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,7 +34,10 @@ public class SecurityConfig {
                 http
                         .authorizeHttpRequests(requests ->
                                 requests
-                                        .requestMatchers("/user", "/auth", "/hello/public").permitAll()
+                                        .requestMatchers("/user",
+                                                "/auth",
+                                                "/hello/public").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/url/**").permitAll()
                                         .anyRequest().authenticated())
 
                         .sessionManagement(sessionManagement ->

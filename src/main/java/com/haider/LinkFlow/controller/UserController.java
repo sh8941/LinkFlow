@@ -2,7 +2,6 @@ package com.haider.LinkFlow.controller;
 
 import com.haider.LinkFlow.dtos.reponse.UserResponse;
 import com.haider.LinkFlow.dtos.request.UserRequest;
-import com.haider.LinkFlow.entity.UserEntity;
 import com.haider.LinkFlow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

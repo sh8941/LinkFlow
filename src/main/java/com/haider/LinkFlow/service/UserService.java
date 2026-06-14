@@ -1,6 +1,6 @@
 package com.haider.LinkFlow.service;
 
-import com.haider.LinkFlow.config.SecurityUtils;
+import com.haider.LinkFlow.utils.SecurityUtils;
 import com.haider.LinkFlow.dtos.reponse.UserResponse;
 import com.haider.LinkFlow.dtos.request.UserRequest;
 import com.haider.LinkFlow.entity.UserEntity;

@@ -17,7 +17,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/url")
+@RequestMapping("api/url")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UrlController {
     @Autowired
     private UrlService urlService;

@@ -2,10 +2,13 @@ spring:
   application:
     name: LinkFlow
   datasource:
-    url: jdbc:postgresql://localhost:5432/link_flow_db
-    username: postgres
-    password: 8941
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+jwt:
+  secret: ${JWT_SECRET}

@@ -2,6 +2,7 @@ package com.haider.LinkFlow.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,8 @@ import java.util.Date;
 
 @Component
 public class JwtService {
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkeymysecretkey";
+    @Value("${jwt.secret}")
+    private static String SECRET;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());

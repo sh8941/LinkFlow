@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class JwtService {
     @Value("${jwt.secret}")
-    private static String SECRET;
+    private String SECRET;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());

@@ -15,3 +15,7 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
+
+app:
+  cors:
+    origins: ${CORS_ORIGINS}

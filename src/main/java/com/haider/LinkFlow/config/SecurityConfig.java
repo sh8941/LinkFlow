@@ -2,6 +2,7 @@ package com.haider.LinkFlow.config;
 
 import com.haider.LinkFlow.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,6 +31,8 @@ public class SecurityConfig {
     JwtFilter jwtFilter;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Value("#{'${app.cors.origins}'.split(',')}")
+    private List<String> corsOrigins;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -73,7 +76,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+                corsOrigins
         );
 
         configuration.setAllowedMethods(

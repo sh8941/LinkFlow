@@ -2,6 +2,7 @@ package com.haider.LinkFlow.controller;
 
 import com.haider.LinkFlow.dtos.request.AuthRequest;
 import com.haider.LinkFlow.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> auth(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> auth(@Valid @RequestBody AuthRequest authRequest) {
     System.out.println("Auth Request: " + authRequest);
         String token = authService.createToken(authRequest);
         return ResponseEntity.ok(Map.of(

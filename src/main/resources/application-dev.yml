@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/link_flow_db
+    username: postgres
+    password: 8941
+jwt:
+  secret: abcedfghijklmnopqrstuvwxyz123456
+
+app:
+  cors:
+    origins: "localhost:5173"

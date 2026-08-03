@@ -6,6 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Entity
+@Table(name = "url_clicks")
 @Data
 public class UrlClickEntity {
     @Id

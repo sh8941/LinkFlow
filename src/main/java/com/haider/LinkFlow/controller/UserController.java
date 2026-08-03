@@ -3,6 +3,7 @@ package com.haider.LinkFlow.controller;
 import com.haider.LinkFlow.dtos.reponse.UserResponse;
 import com.haider.LinkFlow.dtos.request.UserRequest;
 import com.haider.LinkFlow.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> create(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = userService.addUser(userRequest);
         return ResponseEntity.ok().body(userResponse);
     }

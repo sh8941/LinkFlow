@@ -7,6 +7,7 @@ import java.time.Instant;
 
 @Data
 @Entity
+@Table(name = "url")
 public class UrlEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

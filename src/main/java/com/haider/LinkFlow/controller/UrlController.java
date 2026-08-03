@@ -12,12 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/url")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UrlController {
     @Autowired
@@ -25,26 +25,27 @@ public class UrlController {
     @Autowired
     private UrlClickService urlClickService;
 
-    @PostMapping
+    @PostMapping("/api/url")
     public ResponseEntity<?> createUrl(@RequestBody @Valid UrlRequest urlRequest) {
         UrlResponse urlResponse = urlService.addUrl(urlRequest);
-        return ResponseEntity.ok(urlResponse);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(urlResponse.getShortCode()).build().toUri();
+        return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("{url}")
+    @GetMapping("/go/{url}")
     public ResponseEntity<?> getUrl(@PathVariable String url, HttpServletRequest request) {
         String longUrl = urlService.getByShortCode(url);
         urlClickService.trackClick(request,url);
         return ResponseEntity.status(301).location(URI.create(longUrl)).build();
     }
 
-    @DeleteMapping("{url}")
+    @DeleteMapping("api/url{url}")
     public ResponseEntity<?> deleteUrl(@PathVariable String url) {
         urlService.deactivateUrl(url);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/my")
+    @GetMapping("api/url/my")
     ResponseEntity<?> getMyUrls(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("createdAt").descending());
         List<UrlResponse> urls = urlService.getMyUrls(pageable);

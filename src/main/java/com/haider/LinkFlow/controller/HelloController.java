@@ -11,13 +11,11 @@ public class HelloController {
 
     @GetMapping("/public")
     public ResponseEntity<String> helloPublic() {
-    System.out.println("reach to public api");
         return ResponseEntity.ok("Hello World... public api..");
     }
 
     @GetMapping("/private")
     public ResponseEntity<String> helloPrivate() {
-    System.out.println("reach to private api");
         return ResponseEntity.ok("Hello World... private api..");
     }
 }

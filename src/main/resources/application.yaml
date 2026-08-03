@@ -1,10 +1,6 @@
 spring:
   application:
     name: LinkFlow
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,10 +8,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-
-jwt:
-  secret: ${JWT_SECRET}
-
-app:
-  cors:
-    origins: ${CORS_ORIGINS}
+  profiles:
+    active: dev

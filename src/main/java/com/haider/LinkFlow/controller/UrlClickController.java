@@ -9,10 +9,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/clicks")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UrlClickController {
     @Autowired
     private UrlClickService urlClickService;
@@ -24,5 +26,12 @@ public class UrlClickController {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("clickedAt").descending());
         List<UrlClickResponse> clickResponses = urlClickService.getUrlClicks(url,pageable);
         return ResponseEntity.ok(clickResponses);
+    }
+
+    @GetMapping("/my-url-clicks")
+    public ResponseEntity<?> getMyUrlClicks(@RequestParam LocalDate startDate,
+                                           @RequestParam LocalDate endDate) {
+        List<UrlClickResponse> clicks = urlClickService.getMyUrlClicks(startDate, endDate);
+        return ResponseEntity.ok(clicks);
     }
 }

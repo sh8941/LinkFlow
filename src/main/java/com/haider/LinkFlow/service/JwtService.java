@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class JwtService {
     private String SECRET;
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(String username) {
@@ -24,7 +25,7 @@ public class JwtService {
                 Jwts.builder()
                         .setSubject(username)
                         .setIssuedAt(new Date())
-                        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                         .signWith(getSigningKey())
                 .compact();
     }

@@ -6,6 +6,6 @@ spring:
 jwt:
   secret: abcedfghijklmnopqrstuvwxyz123456
 
-app:
-  cors:
-    origins: "localhost:5173"
+#app:
+#  cors:
+#    origins: "localhost:5173"

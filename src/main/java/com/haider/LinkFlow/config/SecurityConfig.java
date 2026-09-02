@@ -31,8 +31,8 @@ public class SecurityConfig {
     JwtFilter jwtFilter;
     @Autowired
     private UserDetailsService userDetailsService;
-    @Value("#{'${app.cors.origins}'.split(',')}")
-    private List<String> corsOrigins;
+//    @Value("#{'${app.cors.origins}'.split(',')}")
+//    private List<String> corsOrigins;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,7 +43,8 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.GET, "/api/url/*").permitAll()
                                         .requestMatchers("/user",
                                                 "/auth/**",
-                                                "/hello/public").permitAll()
+                                                "/hello/public",
+                                                "/go/*").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/url/**").permitAll()
                                         .anyRequest().authenticated())
 
@@ -76,7 +77,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                corsOrigins
+//                corsOrigins
+                List.of("http://localhost:5173")
         );
 
         configuration.setAllowedMethods(

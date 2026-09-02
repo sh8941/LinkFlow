@@ -1,5 +1,6 @@
 package com.haider.LinkFlow.service;
 
+import com.haider.LinkFlow.repo.UrlRepo;
 import com.haider.LinkFlow.utils.SecurityUtils;
 import com.haider.LinkFlow.dtos.reponse.UrlClickResponse;
 import com.haider.LinkFlow.entity.UrlClickEntity;
@@ -13,6 +14,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +27,8 @@ public class UrlClickService {
     private UrlClickRepo urlClickRepo;
     @Autowired
     private SecurityUtils securityUtils;
+    @Autowired
+    private UrlRepo urlRepo;
 
     public void trackClick(HttpServletRequest request, String url) {
         UrlClickEntity urlClickEntity = new UrlClickEntity();
@@ -43,7 +49,7 @@ public class UrlClickService {
         return urlClickRepo.findByUrlEntity(urlEntity, pageable).stream().map(urlClickEntity ->  {
             UrlClickResponse urlClickResponse = new UrlClickResponse();
             urlClickResponse.setUrlEntity(urlEntity.getId());
-            urlClickResponse.setClickedAt(Instant.now());
+            urlClickResponse.setClickedAt(urlClickEntity.getClickedAt());
             urlClickResponse.setIpAddress(urlClickEntity.getIpAddress());
             urlClickResponse.setUserAgent(urlClickEntity.getUserAgent());
             urlClickResponse.setReferer(urlClickEntity.getReferer());
@@ -51,4 +57,36 @@ public class UrlClickService {
         }).toList();
     }
 
+    public List<UrlClickResponse> getMyUrlClicks(LocalDate startDate, LocalDate endDate) {
+
+        Instant start = startDate
+                .atStartOfDay(ZoneId.of("Asia/Kolkata"))
+                .toInstant();
+
+        Instant end = endDate
+                .plusDays(1)
+                .atStartOfDay(ZoneId.of("Asia/Kolkata"))
+                .toInstant();
+
+        UserEntity user = securityUtils.getCurrentUser();
+
+        List<UrlEntity> urls = urlRepo.findByCreator_IdAndActiveTrue(
+                user.getId(),
+                Pageable.unpaged()
+        );
+
+        return urls.stream()
+                .flatMap(url -> urlClickRepo
+                        .findByUrlEntityAndCreatedBetween(url, Pageable.unpaged(), start, end)
+                        .stream()
+                )
+                .map(click -> new UrlClickResponse(
+                        click.getId(),
+                        click.getClickedAt(),
+                        click.getIpAddress(),
+                        click.getUserAgent(),
+                        click.getReferer()
+                ))
+                .toList();
+    }
 }

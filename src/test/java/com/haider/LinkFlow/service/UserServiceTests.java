@@ -1,40 +1,74 @@
 package com.haider.LinkFlow.service;
 
-
+import com.haider.LinkFlow.dtos.reponse.UserResponse;
 import com.haider.LinkFlow.dtos.request.UserRequest;
-import org.junit.jupiter.api.Disabled;
+import com.haider.LinkFlow.entity.UserEntity;
+import com.haider.LinkFlow.repo.UserRepo;
+import com.haider.LinkFlow.utils.SecurityUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
-    @Autowired
+    @Mock
+    private UserRepo userRepo;
+
+    @Mock
+    private SecurityUtils securityUtils;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @InjectMocks
     private UserService userService;
 
-    @Disabled
     @Test
-    public void testAddUser(){
+    public void testAddUser() {
         UserRequest userRequest = new UserRequest();
         userRequest.setUsername("username");
         userRequest.setPassword("password");
-        assertNotNull(userService.addUser(userRequest));
+
+        when(passwordEncoder.encode("password")).thenReturn("encoded-password");
+        when(userRepo.save(any(UserEntity.class))).thenAnswer(invocation -> {
+            UserEntity saved = invocation.getArgument(0);
+            saved.setId(1L);
+            return saved;
+        });
+
+        UserResponse response = userService.addUser(userRequest);
+
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("username", response.getUsername());
+        assertTrue(response.getUsername().contains("user"));
+        verify(passwordEncoder).encode("password");
+        verify(userRepo).save(any(UserEntity.class));
     }
 
-    @Disabled
-    @ParameterizedTest
-    @CsvSource({
-            "1,2,3",
-            "5,10,15",
-            "20,30,50"
-    })
-    public void test(int a, int b, int expected){
-        assertEquals(expected, a+b);
-    }
+    @Test
+    public void testGetCurrentUserResponse() {
+        UserEntity currentUser = new UserEntity();
+        currentUser.setId(7L);
+        currentUser.setUsername("current-user");
 
+        when(securityUtils.getCurrentUser()).thenReturn(currentUser);
+
+        UserResponse response = userService.getCurrentUserResponse();
+
+        assertNotNull(response);
+        assertEquals(7L, response.getId());
+        assertEquals("current-user", response.getUsername());
+        verify(securityUtils).getCurrentUser();
+    }
 }

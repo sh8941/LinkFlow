@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(
 //                corsOrigins
-                List.of("http://localhost:5173")
+                List.of("http://localhost:5173", "https://link-flow-ui.vercel.app/")
         );
 
         configuration.setAllowedMethods(

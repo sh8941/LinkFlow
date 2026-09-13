@@ -1,10 +1,12 @@
 package com.haider.LinkFlow.dtos.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
+@Schema(description = "Request for user authentication")
 public class AuthRequest {
 
     @NotBlank(message = "Username is required")

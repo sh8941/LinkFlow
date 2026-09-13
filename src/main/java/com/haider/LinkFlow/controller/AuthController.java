@@ -2,6 +2,8 @@ package com.haider.LinkFlow.controller;
 
 import com.haider.LinkFlow.dtos.request.AuthRequest;
 import com.haider.LinkFlow.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
+    @Operation(summary = "Login endpoint", description = "Authenticates the user and returns a JWT token in a cookie.")
     public ResponseEntity<?> auth(@Valid @RequestBody AuthRequest authRequest,
                                   HttpServletResponse response) {
         String token = authService.createToken(authRequest);
@@ -33,7 +36,9 @@ public class AuthController {
         return ResponseEntity.ok("Login successful");
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/logout")
+    @Operation(summary = "Logout endpoint", description = "Invalidates the user's JWT token.")
     public ResponseEntity<?> logout(HttpServletResponse response) {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", "")

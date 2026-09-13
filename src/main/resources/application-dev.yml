@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/link_flow_db
+    url: jdbc:postgresql://host.docker.internal:5432/link_flow_db
     username: postgres
     password: 8941
 jwt:
